@@ -7,19 +7,19 @@ services:
       MYSQL_DATABASE: adj-demo
     ports:
       - "3307:3306"
-    volumes:
+    volumes: 
       - adj-volume:/var/lib/mysql
     networks:
       - adj-net
-    restart: unless-stopped
+    restart: unless-stopped 
 
   frontend:
-    image: client:latest
+    image: client:latest 
     build:
       context: ./client
       args:
-        API_HOST: backend
-        API_PORT: 8080
+        API_HOST: localhost
+        API_PORT: 8081
         API_BASE: /adj-api
     container_name: adj-client
     ports:
@@ -29,13 +29,14 @@ services:
     restart: unless-stopped
     depends_on:
       - database
-
+      
   backend:
     image: server:latest
     build:
       context: ./server
     container_name: adj-server
     environment:
+      SERVER_PORT: 8080
       DB_HOST: database
       DB_PORT: 3306
       DB_NAME: adj-demo
